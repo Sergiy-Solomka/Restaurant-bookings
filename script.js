@@ -1,9 +1,9 @@
-const bookingsList = document.querySelector('.bookings_list');
+const afterNavDiv = document.querySelector('.after-nav-div');
 const bookingsHead = document.querySelector('.bookings_head');
 
 let day = '2002-12-09T00:00:00.000Z';
 
-const getAllBookings = async function () {
+const fetchAllBookings = async function () {
   const response = await fetch('http://localhost:5000/bookings/');
   if (!response.ok) throw new Error('Something  wrong');
   const data = await response.json();
@@ -11,6 +11,7 @@ const getAllBookings = async function () {
 };
 
 const renderBookings = function (bookingsObj) {
+  afterNavDiv.innerHTML = '';
   const markup = `<table class="table table-striped">
   <thead>
     <tr>
@@ -40,15 +41,31 @@ ${bookingsObj
   .join('\n')}
   </tbody>
   </table> `;
-  bookingsList.insertAdjacentHTML('afterbegin', markup);
+  afterNavDiv.insertAdjacentHTML('afterbegin', markup);
 };
 
-getAllBookings().then((data) => renderBookings(data));
-/* 
-const openBooking = function () {
-  console.log("clicked");
+const renderCalendar = function () {
+  const calendar = `<table class="table table-dark">
+  <thead>
+    ...
+  </thead>
+  <tbody>
+    <tr class="table-active">
+      ...
+    </tr>
+    <tr>
+      ...
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2" class="table-active">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>`;
+
+  afterNavDiv.insertAdjacentHTML('afterbegin', calendar);
 };
-const openBookingBtn = document.querySelectorAll(".id");
-console.log(openBookingBtn);
-openBookingBtn.addEventListener("click", openBooking);
- */
+
+//fetchAllBookings().then((data) => renderCalendar(data));
+//fetchAllBookings().then((data) => renderBookings(data));

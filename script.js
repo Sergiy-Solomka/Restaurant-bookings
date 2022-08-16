@@ -63,7 +63,7 @@ ${bookingsObj
         <td>${book.name}</td>
         <td>${book.requests}</td>
         <td>${book.contact} </td>
-        <td> <button class="btn btn-secondary btn-booking id = ${book._id}" >OPEN</button></td></tr>`;
+        <td> <button class="btn btn-secondary btn-booking" id = ${book._id} >OPEN</button></td></tr>`;
   })
   .join('\n')}
   </tbody>
@@ -78,6 +78,12 @@ ${bookingsObj
   </footer>
    `;
   container.insertAdjacentHTML('afterbegin', markup);
+  const buttonsOpen = document.querySelectorAll('.btn-booking');
+  buttonsOpen.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      console.log(event.target.id);
+    });
+  });
 };
 //Calendar rendering
 let nav = 0;
@@ -151,7 +157,6 @@ function initButtons() {
   });
 }
 
-//fetchAllBookings();
 initButtons();
 load();
 

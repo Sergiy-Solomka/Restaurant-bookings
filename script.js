@@ -121,30 +121,28 @@ const editBooking = async function (bookingId) {
         </div>
       </div>
     </nav>
-    <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">DATE</th>
-      <th scope="col">TIME</th>
-      <th scope="col">PAX</th>
-      <th scope="col">NAME</th>
-      <th scope="col">REQUESTS</th>
-      <th scope="col">CONTACT</th>
-      <th scope="col">SAVE</th>
-      <th scope="col">DELETE</th>
+        <h1>Edit booking</h1>
+<form class="" action="/bookings/<%=booking._id%>" method="post">
+  <div class="form-group">
+    <label>Date</label>
+    <input class="form-control" type="text" name="date" value = ${booking.date}>
+    <label>Time</label>
+    <input class="form-control" type="text" name="time" value = ${booking.time}> 
+    <label>Amount</label>
+    <input class="form-control" type="text" name="amount" value = ${booking.amount}>
+    <label>Name</label>
+    <input class="form-control" type="text" name="name" value = ${booking.name}>
+    <label>Request</label>
+    <input class="form-control" type="text" name="requests" value = ${booking.requests}>
+    <label>Contact</label>
+    <input class="form-control" type="text" name="contact" value = ${booking.contact}>
 
-    </tr>
-  </thead>
-  <tbody>
-     <tr>
-        <th scope="row">${booking.date}</th>
-        <td>${booking.time}</td>
-        <td>${booking.amount}</td>
-        <td>${booking.name}</td>
-        <td>${booking.requests}</td>
-        <td>${booking.contact} </td>
-        <td> <button class="btn btn-secondary btn-booking" id = ${booking._id} >SAVE</button></td></tr>
-        <td> <button class="btn btn-secondary btn-booking" id = ${booking._id} >DELETE</button></td></tr>
+  </div>
+  <button class="btn btn-primary" type="submit" name="button">Save</button>
+</form>
+<form  action="/delete" method="post">
+    <button class="btn btn-primary" type="submit" name="delete"  value=${booking._id} >DELETE</button>
+</form>
 
   <footer class="bg-light text-center text-lg-start fixed-bottom">
     <!-- Copyright -->
@@ -231,29 +229,3 @@ function initButtons() {
 
 initButtons();
 load();
-
-/* const renderCalendar = function () {
-  const calendar = `<table class="table table-dark">
-  <thead>
-    ...
-  </thead>
-  <tbody>
-    <tr class="table-active">
-      ...
-    </tr>
-    <tr>
-      ...
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2" class="table-active">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>`;
-
-  afterNavDiv.insertAdjacentHTML("afterbegin", calendar);
-}; */
-
-//fetchAllBookings().then((data) => renderCalendar(data));
-//fetchAllBookings().then((data) => renderBookings(data));

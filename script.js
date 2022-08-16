@@ -9,6 +9,13 @@ const fetchAllBookings = async function () {
   return data;
 };
 
+const fetchOneBookings = async function (id) {
+  const response = await fetch(`http://localhost:5000/bookings/${id}`);
+  if (!response.ok) throw new Error('Something  wrong');
+  const data = await response.json();
+  return data;
+};
+
 //const renderBookings = fetchAllBookings().then((data) => renderBookings2(data));
 
 const renderBookings = async function () {
@@ -63,7 +70,7 @@ ${bookingsObj
         <td>${book.name}</td>
         <td>${book.requests}</td>
         <td>${book.contact} </td>
-        <td> <button class="btn btn-secondary btn-booking" id = ${book._id} >OPEN</button></td></tr>`;
+        <td> <button class="btn btn-secondary btn-booking" id = ${book._id} >EDIT</button></td></tr>`;
   })
   .join('\n')}
   </tbody>
@@ -81,9 +88,74 @@ ${bookingsObj
   const buttonsOpen = document.querySelectorAll('.btn-booking');
   buttonsOpen.forEach((btn) => {
     btn.addEventListener('click', (event) => {
-      console.log(event.target.id);
+      editBooking(event.target.id);
     });
   });
+};
+
+const editBooking = async function (bookingId) {
+  container.innerHTML = '';
+  const booking = await fetchOneBookings(bookingId);
+  console.log(booking);
+  const markup = `
+  <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Booking App</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" href="#">New Booking</a>
+            <a class="nav-link" href="#">Contact</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">DATE</th>
+      <th scope="col">TIME</th>
+      <th scope="col">PAX</th>
+      <th scope="col">NAME</th>
+      <th scope="col">REQUESTS</th>
+      <th scope="col">CONTACT</th>
+      <th scope="col">SAVE</th>
+      <th scope="col">DELETE</th>
+
+    </tr>
+  </thead>
+  <tbody>
+     <tr>
+        <th scope="row">${booking.date}</th>
+        <td>${booking.time}</td>
+        <td>${booking.amount}</td>
+        <td>${booking.name}</td>
+        <td>${booking.requests}</td>
+        <td>${booking.contact} </td>
+        <td> <button class="btn btn-secondary btn-booking" id = ${booking._id} >SAVE</button></td></tr>
+        <td> <button class="btn btn-secondary btn-booking" id = ${booking._id} >DELETE</button></td></tr>
+
+  <footer class="bg-light text-center text-lg-start fixed-bottom">
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.489)">
+      © 2022 Copyright:
+      <a class="text-dark" href="https://solomka.dev/">solomka.dev</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+   `;
+  container.insertAdjacentHTML('afterbegin', markup);
 };
 //Calendar rendering
 let nav = 0;

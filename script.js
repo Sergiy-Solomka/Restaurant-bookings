@@ -18,7 +18,7 @@ const fetchOneBookings = async function (id) {
 
 //const renderBookings = fetchAllBookings().then((data) => renderBookings2(data));
 
-const renderBookings = async function () {
+const renderBookingsOfDay = async function () {
   container.innerHTML = "";
   const bookingsObj = await fetchAllBookings();
   const markup = `
@@ -172,7 +172,7 @@ const postSaveBooking = async function (saveData) {
   renderBookings();
 };
 
-const handleFormSubmit = async function (event) {
+const newBookingSubmit = async function (event) {
   event.preventDefault();
   const form = event.currentTarget;
   const formData = new FormData(form);
@@ -193,7 +193,7 @@ const handleFormSubmit = async function (event) {
     });
     const data = await response.json();
     //console.log({ data });
-    renderBookings();
+    renderBookingsOfDay();
   } catch (error) {
     console.log(error);
   }
@@ -246,7 +246,7 @@ const newBookingForm = function () {
   container.insertAdjacentHTML("afterbegin", markup);
 
   const form = document.getElementById("form");
-  form.addEventListener("submit", handleFormSubmit);
+  form.addEventListener("submit", newBookingSubmit);
 };
 
 //Calendar rendering
@@ -302,7 +302,7 @@ function load() {
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
 
-      daySquere.addEventListener("click", renderBookings);
+      daySquere.addEventListener("click", renderBookingsOfDay);
     } else {
       daySquere.classList.add("padding");
     }

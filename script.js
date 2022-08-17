@@ -1,17 +1,17 @@
 //My old code
 
-let day = '2002-12-09T00:00:00.000Z';
+let day = "2002-12-09T00:00:00.000Z";
 
 const fetchAllBookings = async function () {
-  const response = await fetch('http://localhost:5000/bookings/');
-  if (!response.ok) throw new Error('Something  wrong');
+  const response = await fetch("http://localhost:5000/bookings/");
+  if (!response.ok) throw new Error("Something  wrong");
   const data = await response.json();
   return data;
 };
 
 const fetchOneBookings = async function (id) {
   const response = await fetch(`http://localhost:5000/bookings/${id}`);
-  if (!response.ok) throw new Error('Something  wrong');
+  if (!response.ok) throw new Error("Something  wrong");
   const data = await response.json();
   return data;
 };
@@ -19,7 +19,7 @@ const fetchOneBookings = async function (id) {
 //const renderBookings = fetchAllBookings().then((data) => renderBookings2(data));
 
 const renderBookings = async function () {
-  container.innerHTML = '';
+  container.innerHTML = "";
   const bookingsObj = await fetchAllBookings();
   const markup = `
   <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
@@ -39,7 +39,7 @@ const renderBookings = async function () {
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">New Booking</a>
+            <a class="nav-link" id="new-booking">New Booking</a>
             <a class="nav-link" href="#">Contact</a>
           </div>
         </div>
@@ -72,29 +72,24 @@ ${bookingsObj
         <td>${book.contact} </td>
         <td> <button class="btn btn-secondary btn-booking" id = ${book._id} >EDIT</button></td></tr>`;
   })
-  .join('\n')}
+  .join("\n")}
   </tbody>
   </table>
-  <footer class="bg-light text-center text-lg-start fixed-bottom">
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.489)">
-      © 2022 Copyright:
-      <a class="text-dark" href="https://solomka.dev/">solomka.dev</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
    `;
-  container.insertAdjacentHTML('afterbegin', markup);
-  const buttonsOpen = document.querySelectorAll('.btn-booking');
+  container.insertAdjacentHTML("afterbegin", markup);
+  const buttonsOpen = document.querySelectorAll(".btn-booking");
+  const buttonNewBooking = document.getElementById("new-booking");
+  buttonNewBooking.addEventListener("click", newBookingForm);
+
   buttonsOpen.forEach((btn) => {
-    btn.addEventListener('click', (event) => {
+    btn.addEventListener("click", (event) => {
       editBooking(event.target.id);
     });
   });
 };
 
 const editBooking = async function (bookingId) {
-  container.innerHTML = '';
+  container.innerHTML = "";
   const booking = await fetchOneBookings(bookingId);
   console.log(booking);
   const markup = `
@@ -121,8 +116,8 @@ const editBooking = async function (bookingId) {
         </div>
       </div>
     </nav>
-        <h1>Edit booking</h1>
-<form class="" action="/bookings/<%=booking._id%>" method="post">
+        <h2>Edit booking</h2>
+
   <div class="form-group">
     <label>Date</label>
     <input class="form-control" type="text" name="date" value = ${booking.date}>
@@ -138,38 +133,137 @@ const editBooking = async function (bookingId) {
     <input class="form-control" type="text" name="contact" value = ${booking.contact}>
 
   </div>
-  <button class="btn btn-primary" type="submit" name="button">Save</button>
-</form>
-<form  action="/delete" method="post">
-    <button class="btn btn-primary" type="submit" name="delete"  value=${booking._id} >DELETE</button>
-</form>
+  <button class="btn btn-primary btn-save" type="submit" value=${booking._id} >Save</button>
+  <button class="btn btn-primary btn-delete" type="submit"   value=${booking._id} >DELETE</button>
 
-  <footer class="bg-light text-center text-lg-start fixed-bottom">
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.489)">
-      © 2022 Copyright:
-      <a class="text-dark" href="https://solomka.dev/">solomka.dev</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
    `;
-  container.insertAdjacentHTML('afterbegin', markup);
+  container.insertAdjacentHTML("afterbegin", markup);
+  const btnSave = document.querySelector(".btn-save");
+  const btnDelete = document.querySelector(".btn-delete");
+  btnSave.addEventListener("click", postSaveBooking);
 };
+
+const postSaveBooking = async function (saveData) {
+  try {
+    const response = await fetch(`http://localhost:5000/bookings/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // your expected POST request payload goes here
+        date: saveData.date,
+        time: saveData.time,
+        amount: saveData.amount,
+        name: saveData.name,
+        requests: saveData.requests,
+        contact: saveData.contact,
+        id: saveData._id,
+      }),
+    });
+    const data = await response.json();
+    // enter you logic when the fetch is successful
+    console.log(data);
+  } catch (error) {
+    // enter your logic for when there is an error (ex. error toast)
+
+    console.log(error);
+  }
+  renderBookings();
+};
+
+const handleFormSubmit = async function (event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const formData = new FormData(form);
+  const plainFormData = Object.fromEntries(formData.entries());
+  const formDataJsonString = JSON.stringify(plainFormData);
+
+  console.log(typeof formDataJsonString);
+  console.log(formDataJsonString);
+
+  try {
+    const response = await fetch("http://localhost:5000/bookings/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //Accept: "application/json",
+      },
+      body: formDataJsonString,
+    });
+    const data = await response.json();
+    //console.log({ data });
+    renderBookings();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const newBookingForm = function () {
+  container.innerHTML = "";
+  const markup = `
+  <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Booking App</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" href="#">New Booking</a>
+            <a class="nav-link" href="#">Contact</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+        <h2> New booking</h2>
+
+  <form id="form">
+    <label>Date</label>
+    <input class="form-control" type="text" name="date" value=" ">
+    <label>Time</label>
+    <input class="form-control" type="text" name="time" value=" " > 
+    <label>Amount</label>
+    <input class="form-control" type="text" name="amount" value=" " >
+    <label>Name</label>
+    <input class="form-control" type="text" name="name" value=" " >
+    <label>Request</label>
+    <input class="form-control" type="text" name="requests" value=" ">
+    <label>Contact</label>
+    <input class="form-control" type="text" name="contact" value=" ">
+    <button class="btn btn-primary btn-save"  type="submit" >Submit</button>
+  </form>
+   `;
+  container.insertAdjacentHTML("afterbegin", markup);
+
+  const form = document.getElementById("form");
+  form.addEventListener("submit", handleFormSubmit);
+};
+
 //Calendar rendering
 let nav = 0;
 let clicked = null;
 
-const calendar = document.getElementById('calendar');
-const container = document.getElementById('container');
+const calendar = document.getElementById("calendar");
+const container = document.getElementById("container");
 
 const weekdays = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 
 function load() {
@@ -186,42 +280,42 @@ function load() {
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+  const dateString = firstDayOfMonth.toLocaleDateString("en-us", {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
   });
 
-  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
-  document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
-    'en-us',
-    { month: 'long' }
+  const paddingDays = weekdays.indexOf(dateString.split(", ")[0]);
+  document.getElementById("monthDisplay").innerText = `${dt.toLocaleDateString(
+    "en-us",
+    { month: "long" }
   )} ${year}`;
 
-  calendar.innerHTML = '';
+  calendar.innerHTML = "";
 
   for (let i = 1; i <= paddingDays + daysInMonth; i++) {
-    const daySquere = document.createElement('div');
-    daySquere.classList.add('day');
+    const daySquere = document.createElement("div");
+    daySquere.classList.add("day");
 
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
 
-      daySquere.addEventListener('click', renderBookings);
+      daySquere.addEventListener("click", renderBookings);
     } else {
-      daySquere.classList.add('padding');
+      daySquere.classList.add("padding");
     }
     calendar.appendChild(daySquere);
   }
 }
 
 function initButtons() {
-  document.getElementById('nextButton').addEventListener('click', () => {
+  document.getElementById("nextButton").addEventListener("click", () => {
     nav++;
     load();
   });
-  document.getElementById('backButton').addEventListener('click', () => {
+  document.getElementById("backButton").addEventListener("click", () => {
     nav--;
     load();
   });

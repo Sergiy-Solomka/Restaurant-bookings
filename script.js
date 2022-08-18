@@ -1,25 +1,23 @@
 //My old code
 
-let day = "2002-12-09T00:00:00.000Z";
+let day = '2002-12-09T00:00:00.000Z';
 
 const fetchAllBookings = async function () {
-  const response = await fetch("http://localhost:5000/bookings/");
-  if (!response.ok) throw new Error("Something  wrong");
+  const response = await fetch('http://localhost:5000/bookings/');
+  if (!response.ok) throw new Error('Something  wrong');
   const data = await response.json();
   return data;
 };
 
 const fetchOneBookings = async function (id) {
   const response = await fetch(`http://localhost:5000/bookings/${id}`);
-  if (!response.ok) throw new Error("Something  wrong");
+  if (!response.ok) throw new Error('Something  wrong');
   const data = await response.json();
   return data;
 };
 
-//const renderBookings = fetchAllBookings().then((data) => renderBookings2(data));
-
 const renderBookingsOfDay = async function () {
-  container.innerHTML = "";
+  container.innerHTML = '';
   const bookingsObj = await fetchAllBookings();
   const markup = `
   <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
@@ -72,26 +70,26 @@ ${bookingsObj
         <td>${book.contact} </td>
         <td> <button class="btn btn-secondary btn-booking" id = ${book._id} >EDIT</button></td></tr>`;
   })
-  .join("\n")}
+  .join('\n')}
   </tbody>
   </table>
    `;
-  container.insertAdjacentHTML("afterbegin", markup);
-  const buttonsOpen = document.querySelectorAll(".btn-booking");
-  const buttonNewBooking = document.getElementById("new-booking");
-  buttonNewBooking.addEventListener("click", newBookingForm);
+  container.insertAdjacentHTML('afterbegin', markup);
+  const buttonsOpen = document.querySelectorAll('.btn-booking');
+  const buttonNewBooking = document.getElementById('new-booking');
+  buttonNewBooking.addEventListener('click', newBookingForm);
 
   buttonsOpen.forEach((btn) => {
-    btn.addEventListener("click", (event) => {
-      editBooking(event.target.id);
+    btn.addEventListener('click', (event) => {
+      editBookingForm(event.target.id);
     });
   });
 };
 
-const editBooking = async function (bookingId) {
-  container.innerHTML = "";
+const editBookingForm = async function (bookingId) {
+  container.innerHTML = '';
   const booking = await fetchOneBookings(bookingId);
-  console.log(booking);
+  //console.log(booking);
   const markup = `
   <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
       <div class="container-fluid">
@@ -118,7 +116,7 @@ const editBooking = async function (bookingId) {
     </nav>
         <h2>Edit booking</h2>
 
-  <div class="form-group">
+    <form id="form">
     <label>Date</label>
     <input class="form-control" type="text" name="date" value = ${booking.date}>
     <label>Time</label>
@@ -131,35 +129,33 @@ const editBooking = async function (bookingId) {
     <input class="form-control" type="text" name="requests" value = ${booking.requests}>
     <label>Contact</label>
     <input class="form-control" type="text" name="contact" value = ${booking.contact}>
-
-  </div>
-  <button class="btn btn-primary btn-save" type="submit" value=${booking._id} >Save</button>
-  <button class="btn btn-primary btn-delete" type="submit"   value=${booking._id} >DELETE</button>
-
+    <button class="btn btn-primary btn-save" type="submit" id = ${booking._id} >Save</button>
+    <button class="btn btn-primary btn-delete" type="submit"   id = ${booking._id} >DELETE</button>
+    </form>
    `;
-  container.insertAdjacentHTML("afterbegin", markup);
-  const btnSave = document.querySelector(".btn-save");
-  const btnDelete = document.querySelector(".btn-delete");
-  btnSave.addEventListener("click", postSaveBooking);
+  container.insertAdjacentHTML('afterbegin', markup);
+  const form = document.getElementById('form');
+  //const btnSave = document.querySelector(".btn-save");
+  const btnDelete = document.querySelector('.btn-delete');
+  form.addEventListener('submit', editBookingSubmit);
+  btnDelete.addEventListener('submit', deleteBookingSubmit);
 };
 
-const postSaveBooking = async function (saveData) {
+const editBookingSubmit = async function (event) {
+  event.preventDefault();
+  const id = event.target[6].id;
+  const form = event.currentTarget;
+  const formData = new FormData(form);
+  const plainFormData = Object.fromEntries(formData.entries());
+  const formDataJsonString = JSON.stringify(plainFormData);
+
   try {
     const response = await fetch(`http://localhost:5000/bookings/${id}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        // your expected POST request payload goes here
-        date: saveData.date,
-        time: saveData.time,
-        amount: saveData.amount,
-        name: saveData.name,
-        requests: saveData.requests,
-        contact: saveData.contact,
-        id: saveData._id,
-      }),
+      body: formDataJsonString,
     });
     const data = await response.json();
     // enter you logic when the fetch is successful
@@ -169,7 +165,23 @@ const postSaveBooking = async function (saveData) {
 
     console.log(error);
   }
-  renderBookings();
+  renderBookingsOfDay();
+};
+
+const deleteBookingSubmit = async function (id) {
+  try {
+    const response = await fetch(`http://localhost:5000/bookings/${id}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json();
+    // enter you logic when the fetch is successful
+    console.log(data);
+  } catch (error) {
+    // enter your logic for when there is an error (ex. error toast)
+
+    console.log(error);
+  }
+  renderBookingsOfDay();
 };
 
 const newBookingSubmit = async function (event) {
@@ -178,21 +190,15 @@ const newBookingSubmit = async function (event) {
   const formData = new FormData(form);
   const plainFormData = Object.fromEntries(formData.entries());
   const formDataJsonString = JSON.stringify(plainFormData);
-
-  console.log(typeof formDataJsonString);
-  console.log(formDataJsonString);
-
   try {
-    const response = await fetch("http://localhost:5000/bookings/", {
-      method: "POST",
+    const response = await fetch('http://localhost:5000/bookings/', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        //Accept: "application/json",
+        'Content-Type': 'application/json',
       },
       body: formDataJsonString,
     });
     const data = await response.json();
-    //console.log({ data });
     renderBookingsOfDay();
   } catch (error) {
     console.log(error);
@@ -200,7 +206,7 @@ const newBookingSubmit = async function (event) {
 };
 
 const newBookingForm = function () {
-  container.innerHTML = "";
+  container.innerHTML = '';
   const markup = `
   <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
       <div class="container-fluid">
@@ -243,27 +249,27 @@ const newBookingForm = function () {
     <button class="btn btn-primary btn-save"  type="submit" >Submit</button>
   </form>
    `;
-  container.insertAdjacentHTML("afterbegin", markup);
+  container.insertAdjacentHTML('afterbegin', markup);
 
-  const form = document.getElementById("form");
-  form.addEventListener("submit", newBookingSubmit);
+  const form = document.getElementById('form');
+  form.addEventListener('submit', newBookingSubmit);
 };
 
 //Calendar rendering
 let nav = 0;
 let clicked = null;
 
-const calendar = document.getElementById("calendar");
-const container = document.getElementById("container");
+const calendar = document.getElementById('calendar');
+const container = document.getElementById('container');
 
 const weekdays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 
 function load() {
@@ -280,42 +286,42 @@ function load() {
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const dateString = firstDayOfMonth.toLocaleDateString("en-us", {
-    weekday: "long",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
+  const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
   });
 
-  const paddingDays = weekdays.indexOf(dateString.split(", ")[0]);
-  document.getElementById("monthDisplay").innerText = `${dt.toLocaleDateString(
-    "en-us",
-    { month: "long" }
+  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+  document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
+    'en-us',
+    { month: 'long' }
   )} ${year}`;
 
-  calendar.innerHTML = "";
+  calendar.innerHTML = '';
 
   for (let i = 1; i <= paddingDays + daysInMonth; i++) {
-    const daySquere = document.createElement("div");
-    daySquere.classList.add("day");
+    const daySquere = document.createElement('div');
+    daySquere.classList.add('day');
 
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
 
-      daySquere.addEventListener("click", renderBookingsOfDay);
+      daySquere.addEventListener('click', renderBookingsOfDay);
     } else {
-      daySquere.classList.add("padding");
+      daySquere.classList.add('padding');
     }
     calendar.appendChild(daySquere);
   }
 }
 
 function initButtons() {
-  document.getElementById("nextButton").addEventListener("click", () => {
+  document.getElementById('nextButton').addEventListener('click', () => {
     nav++;
     load();
   });
-  document.getElementById("backButton").addEventListener("click", () => {
+  document.getElementById('backButton').addEventListener('click', () => {
     nav--;
     load();
   });

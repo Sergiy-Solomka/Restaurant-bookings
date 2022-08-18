@@ -1,6 +1,6 @@
 //My old code
 
-let day = '2002-12-09T00:00:00.000Z';
+let day; // ='2002-12-09T00:00:00.000Z';
 
 const fetchAllBookings = async function () {
   const response = await fetch('http://localhost:5000/bookings/');
@@ -59,7 +59,7 @@ const renderBookingsOfDay = async function () {
 
 ${bookingsObj
 
-  .filter((book) => book.date === day)
+  .filter((book) => book.date !== day)
   .map((book) => {
     return `      <tr>
         <th scope="row">${book.date}</th>
@@ -130,19 +130,18 @@ const editBookingForm = async function (bookingId) {
     <label>Contact</label>
     <input class="form-control" type="text" name="contact" value = ${booking.contact}>
     <button class="btn btn-primary btn-save" type="submit" id = ${booking._id} >Save</button>
-    <button class="btn btn-primary btn-delete" type="submit"   id = ${booking._id} >DELETE</button>
     </form>
+    <button class="btn btn-primary btn-delete" type="delete"   id = ${booking._id} >DELETE</button>
+
    `;
   container.insertAdjacentHTML('afterbegin', markup);
   const form = document.getElementById('form');
-  //const btnSave = document.querySelector(".btn-save");
   const btnDelete = document.querySelector('.btn-delete');
   form.addEventListener('submit', editBookingSubmit);
-  form.addEventListener('submit', deleteBookingSubmit);
+  btnDelete.addEventListener('click', deleteBookingSubmit);
 };
 
 const editBookingSubmit = async function (event) {
-  container.innerHTML = '';
   event.preventDefault();
   const id = event.target[6].id;
   const form = event.currentTarget;
@@ -166,13 +165,13 @@ const editBookingSubmit = async function (event) {
 
     console.log(error);
   }
+  container.innerHTML = '';
   renderBookingsOfDay();
 };
 
 const deleteBookingSubmit = async function (event) {
-  container.innerHTML = '';
   event.preventDefault();
-  const id = event.target[6].id;
+  const id = event.target.id;
   try {
     const response = await fetch(`http://localhost:5000/bookings/${id}`, {
       method: 'DELETE',
@@ -185,6 +184,7 @@ const deleteBookingSubmit = async function (event) {
 
     console.log(error);
   }
+  container.innerHTML = '';
   renderBookingsOfDay();
 };
 

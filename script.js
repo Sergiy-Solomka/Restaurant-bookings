@@ -1,6 +1,6 @@
 //My old code
 
-let day; // ='2002-12-09T00:00:00.000Z';
+let day;
 
 const fetchAllBookings = async function () {
   const response = await fetch('http://localhost:5000/bookings/');
@@ -16,8 +16,10 @@ const fetchOneBookings = async function (id) {
   return data;
 };
 
-const renderBookingsOfDay = async function () {
+const renderBookingsOfDay = async function (bookingDay) {
   container.innerHTML = '';
+  day = bookingDay;
+  console.log(bookingDay);
   const bookingsObj = await fetchAllBookings();
   const markup = `
   <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
@@ -59,7 +61,7 @@ const renderBookingsOfDay = async function () {
 
 ${bookingsObj
 
-  .filter((book) => book.date !== day)
+  .filter((book) => book.date === day)
   .map((book) => {
     return `      <tr>
         <th scope="row">${book.date}</th>
@@ -166,7 +168,7 @@ const editBookingSubmit = async function (event) {
     console.log(error);
   }
   container.innerHTML = '';
-  renderBookingsOfDay();
+  renderBookingsOfDay(day);
 };
 
 const deleteBookingSubmit = async function (event) {
@@ -185,7 +187,7 @@ const deleteBookingSubmit = async function (event) {
     console.log(error);
   }
   container.innerHTML = '';
-  renderBookingsOfDay();
+  renderBookingsOfDay(day);
 };
 
 const newBookingSubmit = async function (event) {
@@ -276,6 +278,16 @@ const weekdays = [
   'Saturday',
 ];
 
+function openModal(date) {
+  clicked = date;
+  const eventForDay = events.find((e) => e.date === clicked);
+  if (eventForDay) {
+    console.log('We have booings here');
+  } else {
+    console.log('Make new booking');
+  }
+}
+
 function load() {
   const dt = new Date();
 
@@ -312,7 +324,9 @@ function load() {
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
 
-      daySquere.addEventListener('click', renderBookingsOfDay);
+      daySquere.addEventListener('click', () =>
+        renderBookingsOfDay(`${i - paddingDays}/${month + 1}/${year}`)
+      ); //(`${i-paddingDays}/${month +1}/${year}`)
     } else {
       daySquere.classList.add('padding');
     }

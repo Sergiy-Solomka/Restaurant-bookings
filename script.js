@@ -138,10 +138,11 @@ const editBookingForm = async function (bookingId) {
   //const btnSave = document.querySelector(".btn-save");
   const btnDelete = document.querySelector('.btn-delete');
   form.addEventListener('submit', editBookingSubmit);
-  btnDelete.addEventListener('submit', deleteBookingSubmit);
+  form.addEventListener('submit', deleteBookingSubmit);
 };
 
 const editBookingSubmit = async function (event) {
+  container.innerHTML = '';
   event.preventDefault();
   const id = event.target[6].id;
   const form = event.currentTarget;
@@ -168,7 +169,10 @@ const editBookingSubmit = async function (event) {
   renderBookingsOfDay();
 };
 
-const deleteBookingSubmit = async function (id) {
+const deleteBookingSubmit = async function (event) {
+  container.innerHTML = '';
+  event.preventDefault();
+  const id = event.target[6].id;
   try {
     const response = await fetch(`http://localhost:5000/bookings/${id}`, {
       method: 'DELETE',

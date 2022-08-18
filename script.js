@@ -1,3 +1,90 @@
+//Calendar rendering
+let nav = 0;
+let clicked = null;
+
+const calendar = document.getElementById('calendar');
+const container = document.getElementById('container');
+
+const weekdays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+function openModal(date) {
+  clicked = date;
+  const eventForDay = events.find((e) => e.date === clicked);
+  if (eventForDay) {
+    console.log('We have booings here');
+  } else {
+    console.log('Make new booking');
+  }
+}
+
+function load() {
+  const dt = new Date();
+
+  if (nav !== 0) {
+    dt.setMonth(new Date().getMonth() + nav);
+  }
+
+  const day = dt.getDate();
+  const month = dt.getMonth();
+  const year = dt.getFullYear();
+
+  const firstDayOfMonth = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+
+  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+  document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
+    'en-us',
+    { month: 'long' }
+  )} ${year}`;
+
+  calendar.innerHTML = '';
+
+  for (let i = 1; i <= paddingDays + daysInMonth; i++) {
+    const daySquere = document.createElement('div');
+    daySquere.classList.add('day');
+
+    if (i > paddingDays) {
+      daySquere.innerText = i - paddingDays;
+
+      daySquere.addEventListener('click', () =>
+        renderBookingsOfDay(`${i - paddingDays}/${month + 1}/${year}`)
+      ); //(`${i-paddingDays}/${month +1}/${year}`)
+    } else {
+      daySquere.classList.add('padding');
+    }
+    calendar.appendChild(daySquere);
+  }
+}
+
+function initButtons() {
+  document.getElementById('nextButton').addEventListener('click', () => {
+    nav++;
+    load();
+  });
+  document.getElementById('backButton').addEventListener('click', () => {
+    nav--;
+    load();
+  });
+}
+
+initButtons();
+load();
+
 //My old code
 
 let day;
@@ -38,7 +125,7 @@ const renderBookingsOfDay = async function (bookingDay) {
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" id="home">Home</a>
             <a class="nav-link" id="new-booking">New Booking</a>
             <a class="nav-link" href="#">Contact</a>
           </div>
@@ -79,7 +166,9 @@ ${bookingsObj
   container.insertAdjacentHTML('afterbegin', markup);
   const buttonsOpen = document.querySelectorAll('.btn-booking');
   const buttonNewBooking = document.getElementById('new-booking');
+  const buttonHome = document.getElementById('home');
   buttonNewBooking.addEventListener('click', newBookingForm);
+  buttonHome.addEventListener('click', () => window.location.reload());
 
   buttonsOpen.forEach((btn) => {
     btn.addEventListener('click', (event) => {
@@ -109,7 +198,7 @@ const editBookingForm = async function (bookingId) {
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" id="home">Home</a>
             <a class="nav-link" href="#">New Booking</a>
             <a class="nav-link" href="#">Contact</a>
           </div>
@@ -141,6 +230,10 @@ const editBookingForm = async function (bookingId) {
   const btnDelete = document.querySelector('.btn-delete');
   form.addEventListener('submit', editBookingSubmit);
   btnDelete.addEventListener('click', deleteBookingSubmit);
+  const buttonNewBooking = document.getElementById('new-booking');
+  const buttonHome = document.getElementById('home');
+  buttonNewBooking.addEventListener('click', newBookingForm);
+  buttonHome.addEventListener('click', () => window.location.reload());
 };
 
 const editBookingSubmit = async function (event) {
@@ -230,8 +323,8 @@ const newBookingForm = function () {
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">New Booking</a>
+            <a class="nav-link active" id="home">Home</a>
+            <a class="nav-link"id="new-booking">New Booking</a>
             <a class="nav-link" href="#">Contact</a>
           </div>
         </div>
@@ -259,91 +352,8 @@ const newBookingForm = function () {
 
   const form = document.getElementById('form');
   form.addEventListener('submit', newBookingSubmit);
+  const buttonNewBooking = document.getElementById('new-booking');
+  const buttonHome = document.getElementById('home');
+  buttonNewBooking.addEventListener('click', newBookingForm);
+  buttonHome.addEventListener('click', () => window.location.reload());
 };
-
-//Calendar rendering
-let nav = 0;
-let clicked = null;
-
-const calendar = document.getElementById('calendar');
-const container = document.getElementById('container');
-
-const weekdays = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
-
-function openModal(date) {
-  clicked = date;
-  const eventForDay = events.find((e) => e.date === clicked);
-  if (eventForDay) {
-    console.log('We have booings here');
-  } else {
-    console.log('Make new booking');
-  }
-}
-
-function load() {
-  const dt = new Date();
-
-  if (nav !== 0) {
-    dt.setMonth(new Date().getMonth() + nav);
-  }
-
-  const day = dt.getDate();
-  const month = dt.getMonth();
-  const year = dt.getFullYear();
-
-  const firstDayOfMonth = new Date(year, month, 1);
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  });
-
-  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
-  document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
-    'en-us',
-    { month: 'long' }
-  )} ${year}`;
-
-  calendar.innerHTML = '';
-
-  for (let i = 1; i <= paddingDays + daysInMonth; i++) {
-    const daySquere = document.createElement('div');
-    daySquere.classList.add('day');
-
-    if (i > paddingDays) {
-      daySquere.innerText = i - paddingDays;
-
-      daySquere.addEventListener('click', () =>
-        renderBookingsOfDay(`${i - paddingDays}/${month + 1}/${year}`)
-      ); //(`${i-paddingDays}/${month +1}/${year}`)
-    } else {
-      daySquere.classList.add('padding');
-    }
-    calendar.appendChild(daySquere);
-  }
-}
-
-function initButtons() {
-  document.getElementById('nextButton').addEventListener('click', () => {
-    nav++;
-    load();
-  });
-  document.getElementById('backButton').addEventListener('click', () => {
-    nav--;
-    load();
-  });
-}
-
-initButtons();
-load();

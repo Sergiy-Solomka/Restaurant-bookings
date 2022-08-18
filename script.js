@@ -58,12 +58,19 @@ function load() {
     const daySquere = document.createElement('div');
     daySquere.classList.add('day');
 
+    const dayString = `${i - paddingDays}/${month + 1}/${year}`;
+
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
 
-      daySquere.addEventListener('click', () =>
-        renderBookingsOfDay(`${i - paddingDays}/${month + 1}/${year}`)
-      ); //(`${i-paddingDays}/${month +1}/${year}`)
+      /*  const eventsForDay = events.find((e) => e.date === dayString);
+      if (eventsForDay) {
+        const eventDiv = document.createElement('div');
+        eventDiv.classList.add('event');
+        eventDiv.innerText = eventsForDay.amount;
+        daySquere.appendChild(eventDiv);
+      } */
+      daySquere.addEventListener('click', () => renderBookingsOfDay(dayString));
     } else {
       daySquere.classList.add('padding');
     }

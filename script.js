@@ -295,12 +295,14 @@ async function load() {
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
       const eventsForDay = result.find((e) => e.date === dayString);
-      console.log(eventsForDay);
+
+      if (i - paddingDays === day && nav === 0) {
+        daySquere.id = 'currentDay';
+      }
       if (eventsForDay) {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
         eventDiv.innerText = eventsForDay.amount;
-        console.log(result.amount);
         daySquere.appendChild(eventDiv);
       }
 

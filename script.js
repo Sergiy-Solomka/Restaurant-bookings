@@ -274,11 +274,17 @@ async function load() {
   calendar.innerHTML = '';
 
   // Making summ of all amount of people per individual day
-  /* let allEventsSumm;
-  console.log(allEvents);
-  for (let i = 0; i <= allEvents.length; i++) {
-    console.log(allEvents[i].amount); */
+  var result = [];
+  allEvents.reduce(function (res, value) {
+    let onlyDate = value.date;
 
+    if (!res[onlyDate]) {
+      res[onlyDate] = { date: onlyDate, amount: 0 };
+      result.push(res[onlyDate]);
+    }
+    res[onlyDate].amount += value.amount;
+    return res;
+  }, {});
   //
   for (let i = 1; i <= paddingDays + daysInMonth; i++) {
     const daySquere = document.createElement('div');
@@ -288,13 +294,13 @@ async function load() {
 
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
-
-      const eventsForDay = allEvents.filter((e) => e.date === dayString)[0];
-      //console.log(eventsForDay);
+      const eventsForDay = result.find((e) => e.date === dayString);
+      console.log(eventsForDay);
       if (eventsForDay) {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
         eventDiv.innerText = eventsForDay.amount;
+        console.log(result.amount);
         daySquere.appendChild(eventDiv);
       }
 

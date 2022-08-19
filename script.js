@@ -5,7 +5,7 @@ let day;
 const menuNavigation = `
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Booking App</a>
+      <a class="navbar-brand" href="" id="home">Booking App</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -19,9 +19,9 @@ const menuNavigation = `
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link active" id="home">Home</a>
-          <a class="nav-link"id="new-booking">New Booking</a>
-          <a class="nav-link" href="#">Contact</a>
+          <a class="nav-link" href="" id="home">Home</a>
+          <a class="nav-link" href="" id="new-booking">New Booking</a>
+          <a class="nav-link" href="">Contact</a>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@ const fetchOneBookings = async function (id) {
 const renderBookingsOfDay = async function (bookingDay) {
   container.innerHTML = '';
   day = bookingDay;
-  console.log(bookingDay);
+  //console.log(bookingDay);
   const bookingsObj = await fetchAllBookings();
   const renderBookingsForm = `
     <table class="table table-striped">
@@ -199,7 +199,8 @@ const newBookingSubmit = async function (event) {
   }
 };
 
-const newBookingForm = function () {
+const newBookingForm = function (event) {
+  event.preventDefault();
   container.innerHTML = '';
   const newBookingForm = `
         <h2> New booking</h2>
@@ -221,7 +222,6 @@ const newBookingForm = function () {
   </form>
    `;
   container.insertAdjacentHTML('afterbegin', menuNavigation + newBookingForm);
-
   const form = document.getElementById('form');
   form.addEventListener('submit', newBookingSubmit);
   loadButtonsMenuNavigation();
@@ -244,7 +244,7 @@ const weekdays = [
   'Saturday',
 ];
 
-function openModal(date) {
+/* function openModal(date) {
   clicked = date;
   const eventForDay = events.find((e) => e.date === clicked);
   if (eventForDay) {
@@ -252,7 +252,7 @@ function openModal(date) {
   } else {
     console.log('Make new booking');
   }
-}
+} */
 
 async function load() {
   const dt = new Date();
@@ -260,8 +260,8 @@ async function load() {
   if (nav !== 0) {
     dt.setMonth(new Date().getMonth() + nav);
   }
-
-  const day = dt.getDate();
+  const allEvents = await fetchAllBookings();
+  //const day = dt.getDate();
   const month = dt.getMonth();
   const year = dt.getFullYear();
 
@@ -292,7 +292,7 @@ async function load() {
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
 
-      const allEvents = await fetchAllBookings();
+      //const allEvents = await fetchAllBookings();
       const eventsForDay = allEvents.find((e) => e.date === dayString);
       console.log(eventsForDay);
       if (eventsForDay) {

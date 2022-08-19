@@ -244,16 +244,6 @@ const weekdays = [
   'Saturday',
 ];
 
-/* function openModal(date) {
-  clicked = date;
-  const eventForDay = events.find((e) => e.date === clicked);
-  if (eventForDay) {
-    console.log('We have booings here');
-  } else {
-    console.log('Make new booking');
-  }
-} */
-
 async function load() {
   const dt = new Date();
 
@@ -261,7 +251,7 @@ async function load() {
     dt.setMonth(new Date().getMonth() + nav);
   }
   const allEvents = await fetchAllBookings();
-  //const day = dt.getDate();
+  const day = dt.getDate();
   const month = dt.getMonth();
   const year = dt.getFullYear();
 
@@ -283,6 +273,13 @@ async function load() {
 
   calendar.innerHTML = '';
 
+  // Making summ of all amount of people per individual day
+  /* let allEventsSumm;
+  console.log(allEvents);
+  for (let i = 0; i <= allEvents.length; i++) {
+    console.log(allEvents[i].amount); */
+
+  //
   for (let i = 1; i <= paddingDays + daysInMonth; i++) {
     const daySquere = document.createElement('div');
     daySquere.classList.add('day');
@@ -292,9 +289,8 @@ async function load() {
     if (i > paddingDays) {
       daySquere.innerText = i - paddingDays;
 
-      //const allEvents = await fetchAllBookings();
-      const eventsForDay = allEvents.find((e) => e.date === dayString);
-      console.log(eventsForDay);
+      const eventsForDay = allEvents.filter((e) => e.date === dayString)[0];
+      //console.log(eventsForDay);
       if (eventsForDay) {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');

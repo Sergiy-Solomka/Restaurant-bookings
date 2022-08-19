@@ -65,13 +65,15 @@ button {
   background-color: #e8f4fa;
 }
 .event {
-  font-size: 10px;
+  font-size: 20px;
   padding: 3px;
-  background-color: #58bae4;
+  background-color: #587be4;
   color: white;
   border-radius: 5px;
   max-height: 55px;
+  max-width: 40px;
   overflow: hidden;
+  text-align: center;
 }
 .padding {
   cursor: default !important;

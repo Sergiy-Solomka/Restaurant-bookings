@@ -2,6 +2,31 @@
 
 let day;
 
+const menuNavigation = `
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Booking App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" id="home">Home</a>
+          <a class="nav-link"id="new-booking">New Booking</a>
+          <a class="nav-link" href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>`;
+
 const fetchAllBookings = async function () {
   const response = await fetch('http://localhost:5000/bookings/');
   if (!response.ok) throw new Error('Something  wrong');
@@ -21,30 +46,7 @@ const renderBookingsOfDay = async function (bookingDay) {
   day = bookingDay;
   console.log(bookingDay);
   const bookingsObj = await fetchAllBookings();
-  const markup = `
-  <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Booking App</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" id="home">Home</a>
-            <a class="nav-link" id="new-booking">New Booking</a>
-            <a class="nav-link" href="#">Contact</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+  const renderBookingsForm = `
     <table class="table table-striped">
   <thead>
     <tr>
@@ -76,7 +78,11 @@ ${bookingsObj
   </tbody>
   </table>
    `;
-  container.insertAdjacentHTML('afterbegin', markup);
+
+  container.insertAdjacentHTML(
+    'afterbegin',
+    menuNavigation + renderBookingsForm
+  );
   const buttonsOpen = document.querySelectorAll('.btn-booking');
   const buttonNewBooking = document.getElementById('new-booking');
   const buttonHome = document.getElementById('home');
@@ -94,30 +100,7 @@ const editBookingForm = async function (bookingId) {
   container.innerHTML = '';
   const booking = await fetchOneBookings(bookingId);
   //console.log(booking);
-  const markup = `
-  <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Booking App</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-          <a class="nav-link active" id="home">Home</a>
-            <a class="nav-link" href="#">New Booking</a>
-            <a class="nav-link" href="#">Contact</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+  const editBookingForm = `
         <h2>Edit booking</h2>
 
     <form id="form">
@@ -138,7 +121,7 @@ const editBookingForm = async function (bookingId) {
     <button class="btn btn-primary btn-delete" type="delete"   id = ${booking._id} >DELETE</button>
 
    `;
-  container.insertAdjacentHTML('afterbegin', markup);
+  container.insertAdjacentHTML('afterbegin', menuNavigation + editBookingForm);
   const form = document.getElementById('form');
   const btnDelete = document.querySelector('.btn-delete');
   form.addEventListener('submit', editBookingSubmit);
@@ -219,35 +202,12 @@ const newBookingSubmit = async function (event) {
 
 const newBookingForm = function () {
   container.innerHTML = '';
-  const markup = `
-  <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Booking App</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" id="home">Home</a>
-            <a class="nav-link"id="new-booking">New Booking</a>
-            <a class="nav-link" href="#">Contact</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+  const newBookingForm = `
         <h2> New booking</h2>
 
   <form id="form">
     <label>Date</label>
-    <input class="form-control" type="text" name="date" value=" ">
+    <input class="form-control" type="text" name="date" value="${day}">
     <label>Time</label>
     <input class="form-control" type="text" name="time" value=" " > 
     <label>Amount</label>
@@ -261,7 +221,7 @@ const newBookingForm = function () {
     <button class="btn btn-primary btn-save"  type="submit" >Submit</button>
   </form>
    `;
-  container.insertAdjacentHTML('afterbegin', markup);
+  container.insertAdjacentHTML('afterbegin', menuNavigation + newBookingForm);
 
   const form = document.getElementById('form');
   form.addEventListener('submit', newBookingSubmit);
@@ -338,6 +298,7 @@ async function load() {
 
       const allEvents = await fetchAllBookings();
       const eventsForDay = allEvents.find((e) => e.date === dayString);
+      console.log(eventsForDay);
       if (eventsForDay) {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');

@@ -27,6 +27,13 @@ const menuNavigation = `
     </div>
   </nav>`;
 
+const loadButtonsMenuNavigation = function () {
+  const buttonHome = document.getElementById('home');
+  const buttonNewBooking = document.getElementById('new-booking');
+  buttonNewBooking.addEventListener('click', newBookingForm);
+  buttonHome.addEventListener('click', () => window.location.reload());
+};
+
 const fetchAllBookings = async function () {
   const response = await fetch('http://localhost:5000/bookings/');
   if (!response.ok) throw new Error('Something  wrong');
@@ -84,11 +91,7 @@ ${bookingsObj
     menuNavigation + renderBookingsForm
   );
   const buttonsOpen = document.querySelectorAll('.btn-booking');
-  const buttonNewBooking = document.getElementById('new-booking');
-  const buttonHome = document.getElementById('home');
-  buttonNewBooking.addEventListener('click', newBookingForm);
-  buttonHome.addEventListener('click', () => window.location.reload());
-
+  loadButtonsMenuNavigation();
   buttonsOpen.forEach((btn) => {
     btn.addEventListener('click', (event) => {
       editBookingForm(event.target.id);
@@ -126,10 +129,6 @@ const editBookingForm = async function (bookingId) {
   const btnDelete = document.querySelector('.btn-delete');
   form.addEventListener('submit', editBookingSubmit);
   btnDelete.addEventListener('click', deleteBookingSubmit);
-
-  const buttonHome = document.getElementById('home');
-
-  buttonHome.addEventListener('click', () => window.location.reload());
 };
 
 const editBookingSubmit = async function (event) {
@@ -194,7 +193,7 @@ const newBookingSubmit = async function (event) {
       body: formDataJsonString,
     });
     const data = await response.json();
-    renderBookingsOfDay();
+    renderBookingsOfDay(day);
   } catch (error) {
     console.log(error);
   }
@@ -225,10 +224,7 @@ const newBookingForm = function () {
 
   const form = document.getElementById('form');
   form.addEventListener('submit', newBookingSubmit);
-  const buttonNewBooking = document.getElementById('new-booking');
-  const buttonHome = document.getElementById('home');
-  buttonNewBooking.addEventListener('click', newBookingForm);
-  buttonHome.addEventListener('click', () => window.location.reload());
+  loadButtonsMenuNavigation();
 };
 
 //Calendar rendering

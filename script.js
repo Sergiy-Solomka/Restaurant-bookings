@@ -47,7 +47,10 @@ const renderBookingsOfDay = async function (bookingDay) {
   //console.log(bookingDay);
   const bookingsObj = await fetchAllBookings();
   const renderBookingsForm = `
-    <table class="table table-striped">
+   
+
+  <table>
+  <caption>Bookings for : ${day}</caption>
   <thead>
     <tr>
       <th scope="col">DATE</th>
@@ -65,14 +68,17 @@ ${bookingsObj
 
   .filter((book) => book.date === day)
   .map((book) => {
-    return `      <tr>
-        <th scope="row">${book.date}</th>
-        <td>${book.time}</td>
-        <td>${book.amount}</td>
-        <td>${book.name}</td>
-        <td>${book.requests}</td>
-        <td>${book.contact} </td>
-        <td> <button class="btn btn-secondary btn-booking" id = ${book._id} >EDIT</button></td></tr>`;
+    return `      
+        <tr>
+      <td scope="row" data-label="Date">${book.date}</td>
+      <td data-label="Time">${book.time}</td>
+      <td data-label="Amount">${book.amount}</td>
+      <td data-label="Name">${book.name}</td>
+      <td data-label="Requests">${book.requests}</td>
+      <td data-label="Contact">${book.contact}</td>
+      <td ><button class=" btn-booking" id = ${book._id} >EDIT</button></td>
+    </tr>
+    `;
   })
   .join('\n')}
   </tbody>

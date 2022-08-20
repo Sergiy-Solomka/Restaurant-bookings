@@ -18,7 +18,9 @@ const menuNavigation = `
 </nav>`;
 
 const loadButtonsMenuNavigation = function () {
-  document.querySelector('link[href$="calendar.css"]').remove();
+  document.querySelector('link[href$="calendar.css"]')
+    ? document.querySelector('link[href$="calendar.css"]').remove()
+    : false;
   const btnMonthView = document.getElementById('month-view');
   const btnonNewBooking = document.getElementById('new-booking');
   btnonNewBooking.addEventListener('click', newBookingForm);

@@ -3,18 +3,11 @@
 let day;
 
 const menuNavigation = `
-<nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+<link rel="stylesheet" href="pagestyles.css" />
+<nav class="navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="" id="home">Booking App</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button>
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -28,6 +21,7 @@ const menuNavigation = `
   </nav>`;
 
 const loadButtonsMenuNavigation = function () {
+  document.querySelector('link[href$="calendar.css"]').remove();
   const buttonHome = document.getElementById('home');
   const buttonNewBooking = document.getElementById('new-booking');
   buttonNewBooking.addEventListener('click', newBookingForm);
@@ -274,7 +268,7 @@ async function load() {
   calendar.innerHTML = '';
 
   // Making summ of all amount of people per individual day
-  var result = [];
+  let result = [];
   allEvents.reduce(function (res, value) {
     let onlyDate = value.date;
 

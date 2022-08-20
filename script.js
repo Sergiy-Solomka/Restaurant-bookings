@@ -4,21 +4,21 @@ let day;
 
 const menuNavigation = `
 <link rel="stylesheet" href="pagestyles.css" />
-<nav class="navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="" id="home">Booking App</a>
-      <button>
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="" id="home">Home</a>
-          <a class="nav-link" href="" id="new-booking">New Booking</a>
-          <a class="nav-link" href="">Contact</a>
-        </div>
-      </div>
-    </div>
-  </nav>`;
+<nav> 
+<input type="checkbox" id="check">
+<label for="check" class="checkbtn" >
+<i class="fas fa-bars" ></i>
+</label>
+
+<label class ="logo">BookingApp</label> 
+<ul>
+  <li><a class ="active" href="" id="home">Home</a></li>
+  <li><a href="" id="new-booking">New Booking</a></li>
+  <li><a href="" href="">Contact</a></li>
+  
+</ul>   
+    
+</nav>`;
 
 const loadButtonsMenuNavigation = function () {
   document.querySelector('link[href$="calendar.css"]').remove();

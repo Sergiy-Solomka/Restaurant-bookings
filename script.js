@@ -26,14 +26,16 @@ const loadButtonsMenuNavigation = function () {
 };
 
 const fetchAllBookings = async function () {
-  const response = await fetch('http://localhost:5000/bookings/');
+  const response = await fetch('https://bookingsapi.herokuapp.com/bookings/');
   if (!response.ok) throw new Error('Something  wrong');
   const data = await response.json();
   return data;
 };
 
 const fetchOneBookings = async function (id) {
-  const response = await fetch(`http://localhost:5000/bookings/${id}`);
+  const response = await fetch(
+    `https://bookingsapi.herokuapp.com/bookings/${id}`
+  );
   if (!response.ok) throw new Error('Something  wrong');
   const data = await response.json();
   return data;
@@ -131,13 +133,16 @@ const editBookingSubmit = async function (event) {
   const formDataJsonString = JSON.stringify(plainFormData);
 
   try {
-    const response = await fetch(`http://localhost:5000/bookings/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: formDataJsonString,
-    });
+    const response = await fetch(
+      `https://bookingsapi.herokuapp.com/bookings/${id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: formDataJsonString,
+      }
+    );
     const data = await response.json();
     // enter you logic when the fetch is successful
     console.log(data);
@@ -154,9 +159,12 @@ const deleteBookingSubmit = async function (event) {
   event.preventDefault();
   const id = event.target.id;
   try {
-    const response = await fetch(`http://localhost:5000/bookings/${id}`, {
-      method: 'DELETE',
-    });
+    const response = await fetch(
+      `https://bookingsapi.herokuapp.com/bookings/${id}`,
+      {
+        method: 'DELETE',
+      }
+    );
     const data = await response.json();
     // enter you logic when the fetch is successful
     console.log(data);
@@ -176,13 +184,16 @@ const newBookingSubmit = async function (event) {
   const plainFormData = Object.fromEntries(formData.entries());
   const formDataJsonString = JSON.stringify(plainFormData);
   try {
-    const response = await fetch('http://localhost:5000/bookings/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: formDataJsonString,
-    });
+    const response = await fetch(
+      'https://bookingsapi.herokuapp.com/bookings/',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: formDataJsonString,
+      }
+    );
     const data = await response.json();
     renderBookingsOfDay(day);
   } catch (error) {

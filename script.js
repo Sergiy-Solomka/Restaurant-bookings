@@ -12,7 +12,7 @@ const menuNavigation = `
 <label class ="logo">BookingApp</label> 
 <ul>
   <li><a class ="active" href="" id="month-view">Month view</a></li>
-  <li><a href="" id="new-booking">New Booking</a></li>
+  <li><a href="" id="add-booking">Add Booking</a></li>
   <li><a href="" href="">Contact</a></li>
 </ul>   
 </nav>`;
@@ -22,7 +22,7 @@ const loadButtonsMenuNavigation = function () {
     ? document.querySelector('link[href$="calendar.css"]').remove()
     : false;
   const btnMonthView = document.getElementById('month-view');
-  const btnonNewBooking = document.getElementById('new-booking');
+  const btnonNewBooking = document.getElementById('add-booking');
   btnonNewBooking.addEventListener('click', newBookingForm);
   btnMonthView.addEventListener('click', () => window.location.reload());
 };

@@ -1,24 +1,24 @@
 body {
   display: flex;
-  margin-top: 50px;
+  margin-top: 3.125rem;
   justify-content: center;
   background-color: #fffcff;
 }
 button {
-  width: 75px;
+  width: 4.688rem;
   cursor: pointer;
-  box-shadow: 0px 0px 2px gray;
+  box-shadow: 0 0 0.125rem gray;
   border: none;
   outline: none;
-  padding: 5px;
-  border-radius: 5px;
+  padding: 0.313rem;
+  border-radius: 0.313rem;
   color: white;
 }
 
 #header {
-  padding: 10px;
+  padding: 0.625rem;
   color: #d36c6c;
-  font-size: 26px;
+  font-size: 1.625rem;
   font-family: sans-serif;
   display: flex;
   justify-content: space-between;
@@ -27,7 +27,7 @@ button {
   background-color: #92a1d1;
 }
 #container {
-  width: 770px;
+  width: 48.125rem;
 }
 #weekdays {
   width: 100%;
@@ -35,8 +35,8 @@ button {
   color: #247ba0;
 }
 #weekdays div {
-  width: 100px;
-  padding: 10px;
+  width: 6.25rem;
+  padding: 0.625rem;
 }
 #calendar {
   width: 100%;
@@ -45,14 +45,14 @@ button {
   flex-wrap: wrap;
 }
 .day {
-  width: 100px;
-  padding: 10px;
-  height: 100px;
+  width: 6.25rem;
+  padding: 0.625rem;
+  height: 6.25rem;
   cursor: pointer;
   box-sizing: border-box;
   background-color: white;
-  margin: 5px;
-  box-shadow: 0px 0px 3px #cbd4c2;
+  margin: 0.313rem;
+  box-shadow: 0 0 0.188rem #cbd4c2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -65,18 +65,19 @@ button {
   background-color: #e8f4fa;
 }
 .event {
-  font-size: 20px;
-  padding: 3px;
+  font-size: 1.25rem;
+  padding: 0.188rem;
   background-color: #587be4;
   color: white;
-  border-radius: 5px;
-  max-height: 55px;
-  max-width: 40px;
+  border-radius: 0.313rem;
+  max-height: 3.438rem;
+  max-width: 2.5rem;
   overflow: hidden;
   text-align: center;
 }
-.padding {
+/* .padding {
   cursor: default !important;
   background-color: #fffcff !important;
   box-shadow: none !important;
 }
+ */

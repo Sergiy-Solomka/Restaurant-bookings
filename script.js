@@ -111,27 +111,27 @@ const editBookingForm = async function (bookingId) {
         <div class="user-details">
           <div class="input-box">
             <span class="details">Date</span>
-            <input type="text" name="date" value = ${booking.date} placeholder="Enter booking date" >
+            <input type="text" name="date" value = ${booking.date}  >
           </div>
           <div class="input-box">
             <span class="details">Time</span>
-            <input type="text" name="time" value = ${booking.time} placeholder="Reservation time" >
+            <input type="text" name="time" value = ${booking.time}  >
           </div>
           <div class="input-box">
             <span class="details">Amount</span>
-            <input type="text" name="amount" value = ${booking.amount}  placeholder="Amount of guests" >
+            <input type="text" name="amount" value = ${booking.amount}  >
           </div>
           <div class="input-box">
             <span class="details">Name</span>
-            <input type="text" name="name" value = ${booking.name} placeholder="Enter your name" >
+            <input type="text" name="name" value = ${booking.name}>
           </div>
           <div class="input-box">
             <span class="details">Contact</span>
-            <input type="text" name="contact" value = ${booking.contact} placeholder="How contact with you" >
+            <input type="text" name="contact" value = ${booking.contact}  >
           </div>
           <div class="input-box">
             <span class="details">Requests</span>
-            <input type="text" name="requests" value = ${booking.requests} placeholder="Any requests ?" >
+            <input type="text" name="requests" value = ${booking.requests}  >
           </div>
         </div>
         <div class="button">
@@ -240,27 +240,27 @@ const newBookingForm = function (event) {
         <div class="user-details">
           <div class="input-box">
             <span class="details">Date</span>
-            <input type="text" name="date" value="${day}" placeholder="Enter booking date" required>
+            <input type="text" name="date" value="${day}">
           </div>
           <div class="input-box">
             <span class="details">Time</span>
-            <input type="text" name="time" value=" " placeholder="Reservation time" required>
+            <input type="text" name="time" value=" " >
           </div>
           <div class="input-box">
             <span class="details">Amount</span>
-            <input type="text" name="amount" value=" " placeholder="Amount of guests" required>
+            <input type="text" name="amount" value=" " >
           </div>
           <div class="input-box">
             <span class="details">Name</span>
-            <input type="text" name="name" value=" " placeholder="Enter your name" required>
+            <input type="text" name="name" value=" " >
           </div>
           <div class="input-box">
             <span class="details">Contact</span>
-            <input type="text" name="contact" value=" " placeholder="How contact with you" required>
+            <input type="text" name="contact" value=" ">
           </div>
           <div class="input-box">
             <span class="details">Requests</span>
-            <input type="text" name="requests" value=" " placeholder="Any requests ?" required>
+            <input type="text" name="requests" value=" ">
           </div>
         </div>
         <div class="button">

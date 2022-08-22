@@ -104,6 +104,15 @@ a:hover {
     left: 0;
   }
 }
+@media (max-width: 400px) {
+  label.logo {
+    font-size: 20px;
+    padding-left: 30px;
+  }
+  nav ul li a {
+    font-size: 16px;
+  }
+}
 
 /* Styles for rendering bookings */
 table {

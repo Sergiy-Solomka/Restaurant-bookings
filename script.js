@@ -103,27 +103,46 @@ ${bookingsObj
 const editBookingForm = async function (bookingId) {
   container.innerHTML = '';
   const booking = await fetchOneBookings(bookingId);
-  //console.log(booking);
   const editBookingForm = `
-        <h2>Edit booking</h2>
-
-    <form id="form">
-    <label>Date</label>
-    <input class="form-control" type="text" name="date" value = ${booking.date}>
-    <label>Time</label>
-    <input class="form-control" type="text" name="time" value = ${booking.time}> 
-    <label>Amount</label>
-    <input class="form-control" type="text" name="amount" value = ${booking.amount}>
-    <label>Name</label>
-    <input class="form-control" type="text" name="name" value = ${booking.name}>
-    <label>Request</label>
-    <input class="form-control" type="text" name="requests" value = ${booking.requests}>
-    <label>Contact</label>
-    <input class="form-control" type="text" name="contact" value = ${booking.contact}>
-    <button class="btn btn-primary btn-save" type="submit" id = ${booking._id} >Save</button>
-    </form>
-    <button class="btn btn-primary btn-delete" type="delete"   id = ${booking._id} >DELETE</button>
-
+  <div class ="booking-form" class="container">
+    
+    <div class="content">
+      <form id="form">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Date</span>
+            <input type="text" name="date" value = ${booking.date} placeholder="Enter booking date" >
+          </div>
+          <div class="input-box">
+            <span class="details">Time</span>
+            <input type="text" name="time" value = ${booking.time} placeholder="Reservation time" >
+          </div>
+          <div class="input-box">
+            <span class="details">Amount</span>
+            <input type="text" name="amount" value = ${booking.amount}  placeholder="Amount of guests" >
+          </div>
+          <div class="input-box">
+            <span class="details">Name</span>
+            <input type="text" name="name" value = ${booking.name} placeholder="Enter your name" >
+          </div>
+          <div class="input-box">
+            <span class="details">Contact</span>
+            <input type="text" name="contact" value = ${booking.contact} placeholder="How contact with you" >
+          </div>
+          <div class="input-box">
+            <span class="details">Requests</span>
+            <input type="text" name="requests" value = ${booking.requests} placeholder="Any requests ?" >
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" id = ${booking._id} value="Save">
+        </div>
+        <div class="button btn-delete">
+          <input type="submit" type="delete"   id = ${booking._id} value="Delete">
+        </div>
+      </form>
+    </div>
+  </div>
    `;
   container.insertAdjacentHTML('afterbegin', menuNavigation + editBookingForm);
   const form = document.getElementById('form');
@@ -213,23 +232,44 @@ const newBookingForm = function (event) {
   event.preventDefault();
   container.innerHTML = '';
   const newBookingForm = `
-        <h2> New booking</h2>
 
-  <form id="form">
-    <label>Date</label>
-    <input class="form-control" type="text" name="date" value="${day}">
-    <label>Time</label>
-    <input class="form-control" type="text" name="time" value=" " > 
-    <label>Amount</label>
-    <input class="form-control" type="text" name="amount" value=" " >
-    <label>Name</label>
-    <input class="form-control" type="text" name="name" value=" " >
-    <label>Request</label>
-    <input class="form-control" type="text" name="requests" value=" ">
-    <label>Contact</label>
-    <input class="form-control" type="text" name="contact" value=" ">
-    <button class="btn btn-primary btn-save"  type="submit" >Submit</button>
-  </form>
+  <div class ="booking-form" class="container">
+    
+    <div class="content">
+      <form id="form" action="#">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Date</span>
+            <input type="text" name="date" value="${day}" placeholder="Enter booking date" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Time</span>
+            <input type="text" name="time" value=" " placeholder="Reservation time" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Amount</span>
+            <input type="text" name="amount" value=" " placeholder="Amount of guests" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Name</span>
+            <input type="text" name="name" value=" " placeholder="Enter your name" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Contact</span>
+            <input type="text" name="contact" value=" " placeholder="How contact with you" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Requests</span>
+            <input type="text" name="requests" value=" " placeholder="Any requests ?" required>
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Submit">
+        </div>
+      </form>
+    </div>
+  </div>
+
    `;
   container.insertAdjacentHTML('afterbegin', menuNavigation + newBookingForm);
   const form = document.getElementById('form');

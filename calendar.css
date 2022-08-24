@@ -104,6 +104,13 @@ button {
     display: flex;
     flex-wrap: wrap;
   }
+  button {
+    width: 45px;
+  }
+
+  #header {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 350px) {

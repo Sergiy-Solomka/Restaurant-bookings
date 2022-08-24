@@ -367,7 +367,10 @@ form .btn-delete input {
   }
   .content form .user-details {
     max-height: 300px;
-    overflow-y: scroll;
+  }
+  form .button input {
+    height: 45px;
+    margin: 45% 0 0 30%;
   }
   .user-details::-webkit-scrollbar {
     width: 5px;
@@ -376,5 +379,9 @@ form .btn-delete input {
 @media (max-width: 459px) {
   .container .content .category {
     flex-direction: column;
+  }
+  form .button input {
+    height: 45px;
+    margin: 60% 0 0 30%;
   }
 }

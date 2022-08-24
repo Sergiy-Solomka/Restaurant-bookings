@@ -9,7 +9,7 @@ const menuNavigation = `
 <i class="fas fa-bars" ></i>
 </label>
 
-<label class ="logo">BookingApp</label> 
+<label class ="logo" href="" id="month-view">BookingApp</label> 
 <ul>
   <li><a class ="active" href="" id="month-view">Month view</a></li>
   <li><a href="" id="add-booking">Add Booking</a></li>

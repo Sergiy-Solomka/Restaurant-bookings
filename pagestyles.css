@@ -178,6 +178,7 @@ table th {
   table td {
     border-bottom: 1px solid #ddd;
     display: block;
+    block-size: 1.5em;
     font-size: 0.8em;
     text-align: right;
   }
@@ -375,6 +376,9 @@ form .btn-delete input {
   .user-details::-webkit-scrollbar {
     width: 5px;
   }
+  /* .btn-booking {
+    margin;
+  } */
 }
 @media (max-width: 459px) {
   .container .content .category {

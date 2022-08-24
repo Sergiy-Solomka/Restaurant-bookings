@@ -376,9 +376,9 @@ form .btn-delete input {
   .user-details::-webkit-scrollbar {
     width: 5px;
   }
-  /* .btn-booking {
-    margin;
-  } */
+  .btn-booking {
+    margin: -0.8% 45%;
+  }
 }
 @media (max-width: 459px) {
   .container .content .category {

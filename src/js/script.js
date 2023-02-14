@@ -1,4 +1,4 @@
-//My old code
+import { DB_URL } from "./config.js";
 
 let day;
 
@@ -21,32 +21,29 @@ const loadButtonsMenuNavigation = function () {
   document.querySelector('link[href$="calendar.css"]')
     ? document.querySelector('link[href$="calendar.css"]').remove()
     : false;
-  const btnMonthView = document.getElementById('month-view');
-  const btnonNewBooking = document.getElementById('add-booking');
-  btnonNewBooking.addEventListener('click', newBookingForm);
-  btnMonthView.addEventListener('click', () => window.location.reload());
+  const btnMonthView = document.getElementById("month-view");
+  const btnonNewBooking = document.getElementById("add-booking");
+  btnonNewBooking.addEventListener("click", newBookingForm);
+  btnMonthView.addEventListener("click", () => window.location.reload());
 };
 
 const fetchAllBookings = async function () {
-  const response = await fetch('https://bookingsapi.herokuapp.com/bookings/');
-  if (!response.ok) throw new Error('Something  wrong');
+  const response = await fetch(DB_URL);
+  if (!response.ok) throw new Error("Something  wrong");
   const data = await response.json();
   return data;
 };
 
 const fetchOneBookings = async function (id) {
-  const response = await fetch(
-    `https://bookingsapi.herokuapp.com/bookings/${id}`
-  );
-  if (!response.ok) throw new Error('Something  wrong');
+  const response = await fetch(`{DB_URL}${id}`);
+  if (!response.ok) throw new Error("Something  wrong");
   const data = await response.json();
   return data;
 };
 
 const renderBookingsOfDay = async function (bookingDay) {
-  container.innerHTML = '';
+  container.innerHTML = "";
   day = bookingDay;
-  //console.log(bookingDay);
   const bookingsObj = await fetchAllBookings();
   const renderBookingsForm = `
    
@@ -82,26 +79,26 @@ ${bookingsObj
     </tr>
     `;
   })
-  .join('\n')}
+  .join("\n")}
   </tbody>
   </table>
    `;
 
   container.insertAdjacentHTML(
-    'afterbegin',
+    "afterbegin",
     menuNavigation + renderBookingsForm
   );
-  const buttonsOpen = document.querySelectorAll('.btn-booking');
+  const buttonsOpen = document.querySelectorAll(".btn-booking");
   loadButtonsMenuNavigation();
   buttonsOpen.forEach((btn) => {
-    btn.addEventListener('click', (event) => {
+    btn.addEventListener("click", (event) => {
       editBookingForm(event.target.id);
     });
   });
 };
 
 const editBookingForm = async function (bookingId) {
-  container.innerHTML = '';
+  container.innerHTML = "";
   const booking = await fetchOneBookings(bookingId);
   const editBookingForm = `
   <div class ="booking-form" class="container">
@@ -144,11 +141,11 @@ const editBookingForm = async function (bookingId) {
     </div>
   </div>
    `;
-  container.insertAdjacentHTML('afterbegin', menuNavigation + editBookingForm);
-  const form = document.getElementById('form');
-  const btnDelete = document.querySelector('.btn-delete');
-  form.addEventListener('submit', editBookingSubmit);
-  btnDelete.addEventListener('click', deleteBookingSubmit);
+  container.insertAdjacentHTML("afterbegin", menuNavigation + editBookingForm);
+  const form = document.getElementById("form");
+  const btnDelete = document.querySelector(".btn-delete");
+  form.addEventListener("submit", editBookingSubmit);
+  btnDelete.addEventListener("click", deleteBookingSubmit);
 };
 
 const editBookingSubmit = async function (event) {
@@ -160,25 +157,18 @@ const editBookingSubmit = async function (event) {
   const formDataJsonString = JSON.stringify(plainFormData);
 
   try {
-    const response = await fetch(
-      `https://bookingsapi.herokuapp.com/bookings/${id}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: formDataJsonString,
-      }
-    );
+    const response = await fetch(`{DB_URL}${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: formDataJsonString,
+    });
     const data = await response.json();
-    // enter you logic when the fetch is successful
-    console.log(data);
   } catch (error) {
-    // enter your logic for when there is an error (ex. error toast)
-
     console.log(error);
   }
-  container.innerHTML = '';
+  container.innerHTML = "";
   renderBookingsOfDay(day);
 };
 
@@ -186,21 +176,14 @@ const deleteBookingSubmit = async function (event) {
   event.preventDefault();
   const id = event.target.id;
   try {
-    const response = await fetch(
-      `https://bookingsapi.herokuapp.com/bookings/${id}`,
-      {
-        method: 'DELETE',
-      }
-    );
+    const response = await fetch(`{DB_URL}/${id}`, {
+      method: "DELETE",
+    });
     const data = await response.json();
-    // enter you logic when the fetch is successful
-    console.log(data);
   } catch (error) {
-    // enter your logic for when there is an error (ex. error toast)
-
     console.log(error);
   }
-  container.innerHTML = '';
+  container.innerHTML = "";
   renderBookingsOfDay(day);
 };
 
@@ -211,16 +194,13 @@ const newBookingSubmit = async function (event) {
   const plainFormData = Object.fromEntries(formData.entries());
   const formDataJsonString = JSON.stringify(plainFormData);
   try {
-    const response = await fetch(
-      'https://bookingsapi.herokuapp.com/bookings/',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: formDataJsonString,
-      }
-    );
+    const response = await fetch(`{DB_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: formDataJsonString,
+    });
     const data = await response.json();
     renderBookingsOfDay(day);
   } catch (error) {
@@ -230,7 +210,7 @@ const newBookingSubmit = async function (event) {
 
 const newBookingForm = function (event) {
   event.preventDefault();
-  container.innerHTML = '';
+  container.innerHTML = "";
   const newBookingForm = `
 
   <div class ="booking-form" class="container">
@@ -271,9 +251,9 @@ const newBookingForm = function (event) {
   </div>
 
    `;
-  container.insertAdjacentHTML('afterbegin', menuNavigation + newBookingForm);
-  const form = document.getElementById('form');
-  form.addEventListener('submit', newBookingSubmit);
+  container.insertAdjacentHTML("afterbegin", menuNavigation + newBookingForm);
+  const form = document.getElementById("form");
+  form.addEventListener("submit", newBookingSubmit);
   loadButtonsMenuNavigation();
 };
 
@@ -281,17 +261,17 @@ const newBookingForm = function (event) {
 let nav = 0;
 let clicked = null;
 
-const calendar = document.getElementById('calendar');
-const container = document.getElementById('container');
+const calendar = document.getElementById("calendar");
+const container = document.getElementById("container");
 
 const weekdays = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 
 async function load() {
@@ -308,20 +288,20 @@ async function load() {
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+  const dateString = firstDayOfMonth.toLocaleDateString("en-us", {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
   });
 
-  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
-  document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
-    'en-us',
-    { month: 'long' }
+  const paddingDays = weekdays.indexOf(dateString.split(", ")[0]);
+  document.getElementById("monthDisplay").innerText = `${dt.toLocaleDateString(
+    "en-us",
+    { month: "long" }
   )} ${year}`;
 
-  calendar.innerHTML = '';
+  calendar.innerHTML = "";
 
   // Making summ of all amount of people per individual day
   let result = [];
@@ -337,8 +317,8 @@ async function load() {
   }, {});
   //
   for (let i = 1; i <= paddingDays + daysInMonth; i++) {
-    const daySquere = document.createElement('div');
-    daySquere.classList.add('day');
+    const daySquere = document.createElement("div");
+    daySquere.classList.add("day");
 
     const dayString = `${i - paddingDays}/${month + 1}/${year}`;
 
@@ -347,29 +327,29 @@ async function load() {
       const eventsForDay = result.find((e) => e.date === dayString);
 
       if (i - paddingDays === day && nav === 0) {
-        daySquere.id = 'currentDay';
+        daySquere.id = "currentDay";
       }
       if (eventsForDay) {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('event');
+        const eventDiv = document.createElement("div");
+        eventDiv.classList.add("event");
         eventDiv.innerText = eventsForDay.amount;
         daySquere.appendChild(eventDiv);
       }
 
-      daySquere.addEventListener('click', () => renderBookingsOfDay(dayString));
+      daySquere.addEventListener("click", () => renderBookingsOfDay(dayString));
     } else {
-      daySquere.classList.add('padding');
+      daySquere.classList.add("padding");
     }
     calendar.appendChild(daySquere);
   }
 }
 
 function initButtons() {
-  document.getElementById('nextButton').addEventListener('click', () => {
+  document.getElementById("nextButton").addEventListener("click", () => {
     nav++;
     load();
   });
-  document.getElementById('backButton').addEventListener('click', () => {
+  document.getElementById("backButton").addEventListener("click", () => {
     nav--;
     load();
   });

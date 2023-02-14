@@ -1,1 +1,1 @@
-export const DB_URL = "http://localhost/bookings/";
+export const DB_URL = "./bookings/";

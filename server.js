@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 80;
 const URL = process.env.MONGODB_URL;
 mongoose.connect(URL);
 

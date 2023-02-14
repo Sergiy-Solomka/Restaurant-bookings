@@ -35,7 +35,7 @@ const fetchAllBookings = async function () {
 };
 
 const fetchOneBookings = async function (id) {
-  const response = await fetch(`{DB_URL}${id}`);
+  const response = await fetch(`${DB_URL}${id}`);
   if (!response.ok) throw new Error("Something  wrong");
   const data = await response.json();
   return data;
@@ -157,7 +157,7 @@ const editBookingSubmit = async function (event) {
   const formDataJsonString = JSON.stringify(plainFormData);
 
   try {
-    const response = await fetch(`{DB_URL}${id}`, {
+    const response = await fetch(`${DB_URL}${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -176,7 +176,7 @@ const deleteBookingSubmit = async function (event) {
   event.preventDefault();
   const id = event.target.id;
   try {
-    const response = await fetch(`{DB_URL}/${id}`, {
+    const response = await fetch(`${DB_URL}${id}`, {
       method: "DELETE",
     });
     const data = await response.json();
@@ -194,7 +194,7 @@ const newBookingSubmit = async function (event) {
   const plainFormData = Object.fromEntries(formData.entries());
   const formDataJsonString = JSON.stringify(plainFormData);
   try {
-    const response = await fetch(`{DB_URL}`, {
+    const response = await fetch(`${DB_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
